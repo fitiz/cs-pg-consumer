@@ -16,18 +16,18 @@ public class StepCountConsumer {
     private final LeaderboardPgRepository leaderboardPgRepository;
 
     @KafkaListener(
-            topics = {"${prop.config.broker-properties.step-count-topic}"},
+            topics = {"${prop.config.broker-properties.step-count-opic}"},
             groupId = "${prop.config.broker-properties.step-count-topic-pg-consumer-group-id}",
             properties = {"spring.json.value.default.type=com.fitiz.cspgconsumer.model.StepCountUpdateData"})
-    public void gameScorePgConsumer(ConsumerRecord<String, StepCountUpdateData> record) {
+    public void stepCountConsumer(ConsumerRecord<String, StepCountUpdateData> record) {
         var stepCountUpdateData = record.value();
-        log.info("record consumed , userId: {}, score: {}", record.key(), stepCountUpdateData.steps());
+        log.info("Step count consumed , user: {}, step count: {}", stepCountUpdateData.userId(), stepCountUpdateData.steps());
         boolean updatedStepCount = leaderboardPgRepository.updateStepCount(stepCountUpdateData.userId(),
                 stepCountUpdateData.steps());
         if (!updatedStepCount) {
-            log.error("failed to update step count for user: {}", stepCountUpdateData.userId());
+            log.error("Failed to update step count for user: {}", stepCountUpdateData.userId());
             return;
         }
-        log.info("record saved to db , key: {}", record.key());
+        log.info("Step count saved to db , user: {}", stepCountUpdateData.userId());
     }
 }
