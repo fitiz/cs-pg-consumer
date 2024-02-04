@@ -25,9 +25,9 @@ public class StepCountConsumer {
         boolean updatedStepCount = leaderboardPgRepository.updateStepCount(stepCountUpdateData.userId(),
                 stepCountUpdateData.steps());
         if (!updatedStepCount) {
-            log.error("Failed to update step count for user: {}", stepCountUpdateData.userId());
+            log.error("Failed to update step count for user: {}", stepCountUpdateData.username());
             return;
         }
-        log.info("Step count saved to DB , user: {}", stepCountUpdateData.userId());
+        log.info("Step count saved to DB , user: {}", stepCountUpdateData.username());
     }
 }
