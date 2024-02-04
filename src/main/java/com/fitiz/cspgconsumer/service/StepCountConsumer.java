@@ -21,7 +21,7 @@ public class StepCountConsumer {
             properties = {"spring.json.value.default.type=com.fitiz.cspgconsumer.model.StepCountUpdateData"})
     public void stepCountConsumer(ConsumerRecord<String, StepCountUpdateData> record) {
         var stepCountUpdateData = record.value();
-        log.info("Step count consumed , user: {}, step count: {}", stepCountUpdateData.userId(), stepCountUpdateData.steps());
+        log.info("Step count consumed , user: {}, step count: {}", stepCountUpdateData.username(), stepCountUpdateData.steps());
         boolean updatedStepCount = leaderboardPgRepository.updateStepCount(stepCountUpdateData.userId(),
                 stepCountUpdateData.steps());
         if (!updatedStepCount) {
