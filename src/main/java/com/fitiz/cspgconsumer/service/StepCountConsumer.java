@@ -16,7 +16,7 @@ public class StepCountConsumer {
     private final LeaderboardPgRepository leaderboardPgRepository;
 
     @KafkaListener(
-            topics = {"${prop.config.broker-properties.step-count-opic}"},
+            topics = {"${prop.config.broker-properties.step-count-topic}"},
             groupId = "${prop.config.broker-properties.step-count-topic-pg-consumer-group-id}",
             properties = {"spring.json.value.default.type=com.fitiz.cspgconsumer.model.StepCountUpdateData"})
     public void stepCountPgConsumer(ConsumerRecord<String, StepCountUpdateData> record) {
