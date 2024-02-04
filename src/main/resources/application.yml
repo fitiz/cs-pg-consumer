@@ -1,0 +1,31 @@
+spring:
+    lifecycle:
+        timeout-per-shutdown-phase: 10s
+    datasource:
+        url: ${prop.spring.datasource.url}
+        username: ${prop.spring.datasource.username}
+        password: ${prop.spring.datasource.password}
+        driver-class-name: ${prop.spring.datasource.driver-class-name}
+    jpa:
+        hibernate:
+            ddl-auto: ${prop.spring.jpa.hibernate.ddl-auto}
+        properties:
+            hibernate:
+                dialect: ${prop.spring.jpa.properties.hibernate.dialect}
+        open-in-view: ${prop.spring.jpa.open-in-view}
+    kafka:
+        consumer:
+            auto-offset-reset: earliest
+            bootstrap-servers: localhost:29092
+            key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+            value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+            properties:
+                spring.json.use.type.headers: false
+                spring.json.add.type.headers: false
+                spring.json.trusted.packages: '*'
+server:
+    port: ${prop.server.port}
+    shutdown: graceful
+logging:
+    level:
+        com.com.fitiz: info

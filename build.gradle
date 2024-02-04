@@ -1,0 +1,83 @@
+plugins {
+	id 'java'
+	id 'org.springframework.boot' version '3.2.0'
+	id 'io.spring.dependency-management' version '1.1.4'
+	id 'nu.studer.jooq' version '9.0'
+	id 'com.avast.gradle.docker-compose' version "0.17.6"
+}
+
+group = 'com.fitiz'
+version = '0.0.1-SNAPSHOT'
+
+java {
+	sourceCompatibility = '17'
+}
+
+configurations {
+	compileOnly {
+		extendsFrom annotationProcessor
+	}
+}
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+	implementation 'org.springframework:spring-core'
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'org.springframework.kafka:spring-kafka'
+	implementation 'org.springframework:spring-context'
+	implementation 'com.fasterxml.jackson.core:jackson-core'
+	implementation 'org.jooq:jooq:3.18.7'
+	implementation 'org.springframework.boot:spring-boot-starter-jooq:3.2.1'
+	jooqGenerator 'org.postgresql:postgresql:42.5.4'
+	compileOnly 'org.projectlombok:lombok'
+	runtimeOnly 'org.postgresql:postgresql'
+	annotationProcessor 'org.projectlombok:lombok'
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	testImplementation 'org.springframework.kafka:spring-kafka-test'
+}
+
+test {
+	useJUnitPlatform()
+}
+
+jooq {
+	version = '3.18.7'
+	configurations {
+		main {
+			generationTool {
+				jdbc {
+					driver = 'org.postgresql.Driver'
+					url = 'jdbc:postgresql://localhost:5432/challenge'
+					user = 'challenge'
+					password = 'fitiz-challenge'
+					schema = 'public'
+				}
+				generator {
+					name = "org.jooq.codegen.DefaultGenerator"
+					database {
+						name = "org.jooq.meta.postgres.PostgresDatabase"
+						inputSchema = 'public'
+					}
+					generate {
+						relations = true
+						deprecated = false
+						records = true
+						pojos = true
+						immutablePojos = false
+						fluentSetters = true
+					}
+					target {
+						packageName = 'com.fitiz.cspgconsumer'
+						directory = 'build/generated-src/jooq/main'
+					}
+					strategy.name = "org.jooq.codegen.DefaultGeneratorStrategy"
+				}
+			}
+		}
+	}
+}
+
