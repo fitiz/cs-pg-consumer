@@ -1,3 +1,5 @@
+### Challenge service Kafka consumer for PostgreSQL
+
 - Kafka consumer for storing user step counts in PostgreSQL
 
 ```java
